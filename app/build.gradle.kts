@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -12,8 +13,8 @@ android {
         applicationId = "nz.co.ridling.healthproof"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0-milestone1"
+        versionCode = 2
+        versionName = "0.2.0-milestone2-dev"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -78,6 +79,10 @@ dependencies {
     implementation(libs.androidx.health.connect.client)
 
     implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
