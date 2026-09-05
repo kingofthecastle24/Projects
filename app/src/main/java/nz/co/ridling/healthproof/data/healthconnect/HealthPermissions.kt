@@ -20,19 +20,26 @@ import androidx.health.connect.client.records.WeightRecord
  */
 object HealthPermissions {
 
-    val ALL: Set<String> = setOf(
-        HealthPermission.getReadPermission(WeightRecord::class),
-        HealthPermission.getReadPermission(BodyFatRecord::class),
-        HealthPermission.getReadPermission(ExerciseSessionRecord::class),
-        HealthPermission.getReadPermission(ActiveCaloriesBurnedRecord::class),
-        HealthPermission.getReadPermission(TotalCaloriesBurnedRecord::class),
-        HealthPermission.getReadPermission(DistanceRecord::class),
-        HealthPermission.getReadPermission(HeartRateRecord::class),
-        HealthPermission.getReadPermission(SpeedRecord::class),
-        HealthPermission.getReadPermission(ElevationGainedRecord::class),
-        HealthPermission.getReadPermission(StepsRecord::class),
-        HealthPermission.getReadPermission(StepsCadenceRecord::class),
+    /** Permission string to a short, human-readable record type name, in a fixed display order. */
+    private val NAMES_BY_PERMISSION: LinkedHashMap<String, String> = linkedMapOf(
+        HealthPermission.getReadPermission(WeightRecord::class) to "Weight",
+        HealthPermission.getReadPermission(BodyFatRecord::class) to "Body fat",
+        HealthPermission.getReadPermission(ExerciseSessionRecord::class) to "Exercise sessions",
+        HealthPermission.getReadPermission(ActiveCaloriesBurnedRecord::class) to "Active calories burned",
+        HealthPermission.getReadPermission(TotalCaloriesBurnedRecord::class) to "Total calories burned",
+        HealthPermission.getReadPermission(DistanceRecord::class) to "Distance",
+        HealthPermission.getReadPermission(HeartRateRecord::class) to "Heart rate",
+        HealthPermission.getReadPermission(SpeedRecord::class) to "Speed",
+        HealthPermission.getReadPermission(ElevationGainedRecord::class) to "Elevation gained",
+        HealthPermission.getReadPermission(StepsRecord::class) to "Steps",
+        HealthPermission.getReadPermission(StepsCadenceRecord::class) to "Step cadence",
     )
+
+    val ALL: Set<String> = NAMES_BY_PERMISSION.keys
+
+    /** Human-readable names, in display order, for the given permission strings. */
+    fun namesFor(permissions: Collection<String>): List<String> =
+        NAMES_BY_PERMISSION.filterKeys { it in permissions }.values.toList()
 
     fun requestPermissionsContract() = PermissionController.createRequestPermissionResultContract()
 }

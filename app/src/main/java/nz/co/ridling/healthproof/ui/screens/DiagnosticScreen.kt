@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -52,6 +53,7 @@ fun DiagnosticScreen(
     onRefresh: () -> Unit,
     onOpenPrivacy: () -> Unit,
     onSelectPreferredSource: (String?) -> Unit,
+    onRunConnectionTest: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -78,6 +80,11 @@ fun DiagnosticScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item { ConnectionCard(data) }
+            item {
+                Button(onClick = onRunConnectionTest, modifier = Modifier.fillMaxWidth()) {
+                    Text("Run Connection Test")
+                }
+            }
 
             if (isEmpty) {
                 item { EmptyDataCard() }

@@ -51,6 +51,12 @@ data class ConnectionStatus(
     val dataSourceCount: Int,
 )
 
+/** A read that failed for one record type. [message] is an exception class name only - never health data. */
+data class ReadIssue(
+    val recordTypeName: String,
+    val message: String,
+)
+
 /** Everything the diagnostic screen needs, assembled by the repository on each refresh. */
 data class DiagnosticData(
     val connection: ConnectionStatus,
@@ -58,4 +64,6 @@ data class DiagnosticData(
     val workouts: List<WorkoutSession>,
     val dataOrigins: List<DataOrigin>,
     val preferredSourcePackageName: String?,
+    val missingRecordTypeNames: List<String> = emptyList(),
+    val readIssues: List<ReadIssue> = emptyList(),
 )

@@ -49,9 +49,7 @@ class HealthDataRepository(
             val range = HealthConnectManager.thirtyDayWindow()
             val preferredSource = preferredSourceStore.preferredSourcePackageName.first()
 
-            val dataOrigins = healthConnectManager.discoverDataOrigins(range, granted)
-            val weight = healthConnectManager.readWeightSummary(range, granted, preferredSource)
-            val workouts = healthConnectManager.readWorkouts(range, granted, preferredSource)
+            val snapshot = healthConnectManager.readDiagnosticSnapshot(range, granted, preferredSource)
 
             if (granted.isNotEmpty()) {
                 lastSuccessfulRefresh = Instant.now()
@@ -62,15 +60,17 @@ class HealthDataRepository(
                 permissionsGranted = missing.isEmpty(),
                 missingPermissionCount = missing.size,
                 lastSuccessfulRefresh = lastSuccessfulRefresh,
-                dataSourceCount = dataOrigins.size,
+                dataSourceCount = snapshot.dataOrigins.size,
             )
 
             val data = DiagnosticData(
                 connection = connection,
-                weight = weight,
-                workouts = workouts,
-                dataOrigins = dataOrigins,
+                weight = snapshot.weight,
+                workouts = snapshot.workouts,
+                dataOrigins = snapshot.dataOrigins,
                 preferredSourcePackageName = preferredSource,
+                missingRecordTypeNames = HealthPermissions.namesFor(missing),
+                readIssues = snapshot.issues,
             )
 
             if (missing.isNotEmpty() && granted.isEmpty()) {
