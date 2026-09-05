@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <!--
+        Adaptive icons must live in a "-v26" qualified mipmap directory even though
+        minSdk is already 26: the platform's icon resolution specifically looks for the
+        ANYDPI_V26 density bucket for <adaptive-icon>, and merging it into a plain
+        "mipmap-anydpi" folder breaks resource linking (confirmed by a local build).
+    -->
+    <issue id="ObsoleteSdkInt">
+        <ignore path="src/main/res/mipmap-anydpi-v26" />
+    </issue>
+</lint>
