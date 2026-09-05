@@ -1,17 +1,16 @@
 name: Build debug APK
 
-# Builds a debug APK on every push to a milestone branch and on every PR into
-# main, runs unit tests + lint first, and uploads the APK as a downloadable
-# workflow artifact. Debug-signed only - never touches release signing, never
-# publishes anywhere.
+# Builds a debug APK on every push to a milestone branch, runs unit tests +
+# lint first, and uploads the APK as a downloadable workflow artifact.
+# Debug-signed only - never touches release signing, never publishes
+# anywhere. Deliberately push-only (no separate pull_request trigger): a
+# push-triggered run's checks already attach to any open PR for that branch
+# by commit SHA, so adding pull_request too would just run everything twice.
 
 on:
   push:
     branches:
       - "claude/**"
-  pull_request:
-    branches:
-      - main
   workflow_dispatch: {}
 
 jobs:
