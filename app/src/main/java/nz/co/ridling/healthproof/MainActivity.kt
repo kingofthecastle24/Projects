@@ -9,6 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -53,7 +56,10 @@ private fun HealthProofApp() {
     val uiState by viewModel.uiState.collectAsState()
     val navController = rememberNavController()
 
-    val permissionLauncher = rememberLauncherForActivityResult(HealthPermissions.requestPermissionsContract()) {
+    var permissionLaunchError by remember { mutableStateOf<String?>(null) }
+    var lastPermissionResultCount by remember { mutableStateOf<Int?>(null) }
+    val permissionLauncher = rememberLauncherForActivityResult(HealthPermissions.requestPermissionsContract()) { grantedByDialog ->
+        lastPermissionResultCount = grantedByDialog.size
         viewModel.onPermissionRequestCompleted()
     }
 
@@ -79,9 +85,18 @@ private fun HealthProofApp() {
 
                 is DiagnosticUiState.PermissionRequired -> PermissionRequiredScreen(
                     deniedPreviously = state.deniedPreviously,
-                    onGrantAccess = { permissionLauncher.launch(viewModel.permissionsToRequest) },
+                    onGrantAccess = {
+                        permissionLaunchError = try {
+                            permissionLauncher.launch(viewModel.permissionsToRequest)
+                            null
+                        } catch (e: Exception) {
+                            "${e.javaClass.simpleName}: ${e.message}"
+                        }
+                    },
                     onOpenSettings = { openHealthConnectSettings(context) },
                     onOpenPrivacy = { navController.navigate(ROUTE_PRIVACY) },
+                    diagnosticMessage = permissionLaunchError
+                        ?: lastPermissionResultCount?.let { "Health Connect's own dialog last returned $it permission(s) granted." },
                 )
 
                 is DiagnosticUiState.Content -> DiagnosticScreen(

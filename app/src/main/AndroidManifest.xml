@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
+        Package visibility (Android 11+): without this, resolving the intent that opens
+        Health Connect's permission-request screen can silently fail to find a target on
+        some devices/OS versions, even though Health Connect itself is installed and
+        otherwise detected as available.
+    -->
+    <queries>
+        <package android:name="com.google.android.apps.healthdata" />
+    </queries>
+
+    <!--
         Read-only Health Connect permissions. There are no WRITE_* permissions
         declared anywhere in this app - Milestone 1 is a read-only diagnostic proof.
     -->

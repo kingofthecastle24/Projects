@@ -88,6 +88,7 @@ fun PermissionRequiredScreen(
     onGrantAccess: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenPrivacy: () -> Unit,
+    diagnosticMessage: String? = null,
 ) {
     Column(
         modifier = Modifier
@@ -116,6 +117,14 @@ fun PermissionRequiredScreen(
             )
         }
         Button(onClick = onGrantAccess) { Text(stringResource(R.string.action_grant_access)) }
+        if (diagnosticMessage != null) {
+            Text(
+                diagnosticMessage,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(top = 12.dp),
+            )
+        }
         OutlinedButton(onClick = onOpenSettings, modifier = Modifier.padding(top = 12.dp)) {
             Text(stringResource(R.string.action_open_health_connect_settings))
         }
