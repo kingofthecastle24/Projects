@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -54,6 +55,15 @@ private fun HealthProofApp() {
 
     val permissionLauncher = rememberLauncherForActivityResult(HealthPermissions.requestPermissionsContract()) {
         viewModel.onPermissionRequestCompleted()
+    }
+
+    // Health Connect permissions can change while this app isn't in the foreground - most
+    // commonly, the user granting or revoking them from the Health Connect app directly rather
+    // than through this app's own request flow. Re-check on every resume so that's picked up
+    // without the user having to tap anything in this app first.
+    LifecycleResumeEffect(Unit) {
+        viewModel.refresh()
+        onPauseOrDispose { }
     }
 
     NavHost(navController = navController, startDestination = ROUTE_DIAGNOSTIC) {
