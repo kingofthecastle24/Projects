@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import nz.co.ridling.healthproof.BuildConfig
 import nz.co.ridling.healthproof.R
 import nz.co.ridling.healthproof.data.healthconnect.HealthConnectAvailability
 
@@ -131,6 +132,12 @@ fun PermissionRequiredScreen(
         OutlinedButton(onClick = onOpenPrivacy, modifier = Modifier.padding(top = 12.dp)) {
             Text(stringResource(R.string.action_privacy_info))
         }
+        Text(
+            "Build ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 24.dp),
+        )
     }
 }
 

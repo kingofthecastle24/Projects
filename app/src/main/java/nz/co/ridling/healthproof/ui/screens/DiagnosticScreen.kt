@@ -150,6 +150,7 @@ private fun ConnectionCard(data: DiagnosticData) {
             data.connection.lastSuccessfulRefresh?.toDisplayString() ?: "Never",
         )
         LabelValueRow("Data sources discovered", data.connection.dataSourceCount.toString())
+        LabelValueRow("Build", "${nz.co.ridling.healthproof.BuildConfig.VERSION_NAME} (${nz.co.ridling.healthproof.BuildConfig.VERSION_CODE})")
     }
 }
 

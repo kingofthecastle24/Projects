@@ -12,8 +12,8 @@ android {
         applicationId = "nz.co.ridling.healthproof"
         minSdk = 26
         targetSdk = 36
-        versionCode = 4
-        versionName = "0.1.3-milestone1"
+        versionCode = 5
+        versionName = "0.1.4-milestone1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,6 +42,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {
