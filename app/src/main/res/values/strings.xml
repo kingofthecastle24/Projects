@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Health Connect Proof</string>
+
+    <string name="rationale_title">Why this app needs Health Connect access</string>
+    <string name="rationale_body">This app reads your weight and workout data (recorded by Garmin Connect and other apps) from Android Health Connect, so it can eventually build nutrition, weight and training tracking on top of data you already record. It only ever reads data - it never writes to Health Connect, and it never asks for your Garmin username or password. All data stays on this device.</string>
+
+    <string name="action_grant_access">Grant Health Connect access</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_open_health_connect_settings">Open Health Connect settings</string>
+    <string name="action_install_health_connect">Install Health Connect</string>
+    <string name="action_update_health_connect">Update Health Connect</string>
+    <string name="action_privacy_info">Privacy information</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_back">Back</string>
+
+    <string name="privacy_title">Privacy information</string>
+</resources>
