@@ -9,7 +9,6 @@ import androidx.health.connect.client.records.ElevationGainedRecord
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SpeedRecord
-import androidx.health.connect.client.records.StepsCadenceRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
 import androidx.health.connect.client.records.WeightRecord
@@ -17,6 +16,11 @@ import androidx.health.connect.client.records.WeightRecord
 /**
  * Every permission this app can ever request. All read-only - Milestone 1 never
  * requests HealthPermission.getWritePermission() for any record type.
+ *
+ * StepsCadenceRecord is deliberately excluded: on-device testing found at least one real
+ * Health Connect install that doesn't recognise it (missing from its own "Data and access"
+ * list), and requesting it anyway broke the *entire* permission request - Health Connect
+ * fell back to opening its home screen instead of a grant dialog, granting nothing at all.
  */
 object HealthPermissions {
 
@@ -32,7 +36,6 @@ object HealthPermissions {
         HealthPermission.getReadPermission(SpeedRecord::class) to "Speed",
         HealthPermission.getReadPermission(ElevationGainedRecord::class) to "Elevation gained",
         HealthPermission.getReadPermission(StepsRecord::class) to "Steps",
-        HealthPermission.getReadPermission(StepsCadenceRecord::class) to "Step cadence",
     )
 
     val ALL: Set<String> = NAMES_BY_PERMISSION.keys

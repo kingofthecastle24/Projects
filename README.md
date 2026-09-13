@@ -17,8 +17,9 @@ confirmed on a real device.
 - Explains why access is needed, then requests **read-only** permissions for:
   `WeightRecord`, `BodyFatRecord`, `ExerciseSessionRecord`,
   `ActiveCaloriesBurnedRecord`, `TotalCaloriesBurnedRecord`, `DistanceRecord`,
-  `HeartRateRecord`, `SpeedRecord`, `ElevationGainedRecord`, `StepsRecord`,
-  `StepsCadenceRecord`.
+  `HeartRateRecord`, `SpeedRecord`, `ElevationGainedRecord`, `StepsRecord`.
+  (`StepsCadenceRecord` was tried and deliberately dropped - see "Why
+  StepsCadenceRecord isn't requested" below.)
 - Never requests a write permission for any record type.
 - Reads the previous 30 days of data on each refresh.
 - Shows a diagnostic home screen with three sections: **Connection**,
@@ -230,6 +231,29 @@ All three run automatically on every push via
 `.github/workflows/build-debug-apk.yml`; see the PR description or the
 Actions tab for results on the current commit.
 
+## Why StepsCadenceRecord isn't requested
+
+Milestone 1's original scope listed `StepsCadenceRecord` as "where
+supported". On-device testing found a real Health Connect install where it
+isn't: the app got stuck on the "access hasn't been granted yet" screen no
+matter what, and a screen recording showed why — tapping **Grant Health
+Connect access** wasn't opening a permission dialog for this app at all, it
+was opening Health Connect's own home screen instead, and this app never
+appeared anywhere in Health Connect's app list (not even under "not
+allowed"). Health Connect's own **Data and access** list on that device
+enumerates Active calories burned, Distance, Elevation gained, Exercise,
+Floors climbed, Speed, Steps, Total calories burned — no step cadence at
+all. Requesting a permission for a record type Health Connect doesn't
+recognise broke the *entire* permission request rather than just being
+ignored for that one type.
+
+`StepsCadenceRecord` has been removed from the requested permission set,
+the manifest, and the privacy screen's copy. If it turns out to matter
+later, the fix would need to detect support before requesting it (there's
+no direct API for that — it'd mean requesting it separately and treating a
+"nothing at all was granted" result as a signal to retry without it), not
+just adding it back.
+
 ## What still needs verifying on a real device
 
 Everything above the Health Connect client boundary was exercised with
@@ -238,8 +262,10 @@ Android hardware or emulator attached). Before treating Milestone 1 as fully
 signed off, verify on an actual phone with Garmin Connect installed:
 
 - The permission rationale/request screen actually renders the Health
-  Connect system dialog listing all 11 record types, and granting/denying
-  is reflected correctly back in this app.
+  Connect system dialog listing the record types, and granting/denying
+  is reflected correctly back in this app. (Confirmed on-device: see "Why
+  StepsCadenceRecord isn't requested" below for one failure mode already
+  found and fixed this way.)
 - Garmin Connect's real `dataOrigin.packageName` value appears in the
   **Data sources** card (expected to be
   `com.garmin.android.apps.connectmobile`, but this must be confirmed, not

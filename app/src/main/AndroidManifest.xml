@@ -14,6 +14,14 @@
     <!--
         Read-only Health Connect permissions. There are no WRITE_* permissions
         declared anywhere in this app - Milestone 1 is a read-only diagnostic proof.
+
+        READ_STEPS_CADENCE is deliberately NOT requested: on a real test device, its
+        Health Connect version doesn't recognise StepsCadenceRecord at all (absent from
+        Health Connect's own "Data and access" list), and including an unrecognised
+        permission in the request set broke permission requests entirely - Health
+        Connect fell back to opening its own home screen instead of a grant dialog,
+        and nothing was ever granted. The original task spec hedged this type as
+        "where supported"; on-device testing found it is not.
     -->
     <uses-permission android:name="android.permission.health.READ_WEIGHT" />
     <uses-permission android:name="android.permission.health.READ_BODY_FAT" />
@@ -25,7 +33,6 @@
     <uses-permission android:name="android.permission.health.READ_SPEED" />
     <uses-permission android:name="android.permission.health.READ_ELEVATION_GAINED" />
     <uses-permission android:name="android.permission.health.READ_STEPS" />
-    <uses-permission android:name="android.permission.health.READ_STEPS_CADENCE" />
 
     <application
         android:name=".HealthProofApplication"

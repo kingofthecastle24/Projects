@@ -47,7 +47,7 @@ fun PrivacyScreen(onBack: () -> Unit) {
                 title = "What is read",
                 body = "This app reads, from Android Health Connect only: body weight, body fat percentage, " +
                     "exercise sessions, active calories burned, total calories burned, distance, heart rate, " +
-                    "speed, elevation gained, step count, and step cadence. It reads the most recent 30 days " +
+                    "speed, elevation gained, and step count. It reads the most recent 30 days " +
                     "of each. It never reads anything Health Connect doesn't already hold.",
             )
             PrivacySection(

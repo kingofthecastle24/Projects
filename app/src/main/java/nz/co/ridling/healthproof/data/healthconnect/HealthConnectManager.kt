@@ -14,7 +14,6 @@ import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.Record
 import androidx.health.connect.client.records.SpeedRecord
-import androidx.health.connect.client.records.StepsCadenceRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
 import androidx.health.connect.client.records.WeightRecord
@@ -53,7 +52,6 @@ private data class RecordsSnapshot(
     val speed: List<SpeedRecord> = emptyList(),
     val elevation: List<ElevationGainedRecord> = emptyList(),
     val steps: List<StepsRecord> = emptyList(),
-    val stepsCadence: List<StepsCadenceRecord> = emptyList(),
     val issues: List<ReadIssue> = emptyList(),
 )
 
@@ -153,7 +151,6 @@ class HealthConnectManager(private val context: Context) {
             speed = read(SpeedRecord::class, permissionFor<SpeedRecord>()),
             elevation = read(ElevationGainedRecord::class, permissionFor<ElevationGainedRecord>()),
             steps = read(StepsRecord::class, permissionFor<StepsRecord>()),
-            stepsCadence = read(StepsCadenceRecord::class, permissionFor<StepsCadenceRecord>()),
             issues = issues,
         )
     }
@@ -176,7 +173,6 @@ class HealthConnectManager(private val context: Context) {
         tally(snapshot.speed)
         tally(snapshot.elevation)
         tally(snapshot.steps)
-        tally(snapshot.stepsCadence)
 
         return counts.map { (pkg, count) -> DataOrigin(pkg, appLabelFor(pkg), count) }
             .sortedByDescending { it.recordCount }
